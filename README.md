@@ -6,3 +6,73 @@ codegen implements full features of codebase analysis via codegen sdk and uses m
 
 
 Autonomous full CI/CD. User should be able to adjust requirements at any moment.
+
+
+
+Example uses. 
+
+from codegen import Agent
+# Create an agent
+agent = Agent(org_id="ccc", token="cccccc")
+# Run on task
+task = agent.run("Generate docs for my backend repo")
+# Refresh to get updated status
+task.refresh()
+print(task.status)
+# Once task is complete, you can access the result
+if task.status == "completed":
+    print(task.result)
+
+
+
+
+
+from codegen import Agent
+
+# Initialize the Agent with your organization ID and API token
+agent = Agent(org_id="...", token="...")
+
+# Run an agent with a prompt
+task = agent.run(prompt="Leave a review on PR #123")
+
+# Check the initial status
+print(task.status)
+
+# Refresh the task to get updated status (tasks can take time)
+task.refresh()
+
+if task.status == "completed":
+    print(task.result)  # Result often contains code, summaries, or links
+
+
+
+
+
+from codegen.agents.agent import Agent
+
+# Initialize the Agent with your organization ID and API token
+agent = Agent(
+    org_id="YOUR_ORG_ID",  # Find this at codegen.com/developer
+    token="YOUR_API_TOKEN",  # Get this from codegen.com/developer
+    # base_url="https://codegen-sh-rest-api.modal.run",  # Optional - defaults to production
+)
+
+# Run an agent with a prompt
+task = agent.run(prompt="Implement a new feature to sort users by last login.")
+
+# Check the initial status
+print(task.status)
+
+# Refresh the task to get updated status (tasks can take time)
+task.refresh()
+
+# Check the updated status
+print(task.status)
+
+# Once task is complete, you can access the result
+if task.status == "completed":
+    print(task.result)  # Result often contains code, summaries, or links
+
+
+
+
