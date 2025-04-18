@@ -1,49 +1,57 @@
 # Code-Mind
 
-Code-Mind is a Codegen engine driven by itself - a self-improving code generation system.
+Code-Mind is a Codegen engine driven by itself. It provides a platform for analyzing, reflecting on, and improving codebases using AI-powered insights.
 
 ## Features
 
-- API server for code generation and analysis
-- UI interface for interacting with the system
-- Extensible architecture for adding new capabilities
+- **Project Management**: Create and manage coding projects with requirements tracking
+- **Code Analysis**: Analyze repositories for code quality, architecture, and security issues
+- **Project Reflection**: Generate AI-powered reflections on project requirements, implementation strategies, and technology stack recommendations
 
-## Installation
+## Architecture
 
-```bash
-# Clone the repository
-git clone https://github.com/Zeeeepa/Code-Mind.git
-cd Code-Mind
+Code-Mind consists of two main components:
 
-# Install dependencies
-pip install -r requirements.txt
-```
+1. **FastAPI Backend**: Provides RESTful API endpoints for project management, code analysis, and reflection generation
+2. **Streamlit Frontend**: Offers an intuitive UI for interacting with the Code-Mind features
 
-## Usage
+## Getting Started
 
-### Running the API Server
+### Prerequisites
 
-```bash
-python -m src.code_mind.main --api --host 0.0.0.0 --api-port 8000 --reload
-```
+- Python 3.8+
+- pip
 
-### Running the UI
+### Installation
 
-```bash
-python -m src.code_mind.main --ui --host 0.0.0.0 --ui-port 8501
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Zeeeepa/Code-Mind.git
+   cd Code-Mind
+   ```
 
-Or directly with Streamlit:
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-streamlit run src/code_mind/ui/app.py --server.address 0.0.0.0 --server.port 8501
-```
+3. Run the application:
+   ```bash
+   python -m src.code_mind.main
+   ```
 
-### Running Both API and UI
+   This will start both the API server (on port 8000) and the UI server (on port 8501).
 
-```bash
-python -m src.code_mind.main --api --ui --host 0.0.0.0 --api-port 8000 --ui-port 8501 --reload
-```
+   You can also run them separately:
+   ```bash
+   # Run just the API
+   python -m src.code_mind.main --api
+
+   # Run just the UI
+   python -m src.code_mind.main --ui
+   ```
+
+4. Access the UI in your browser at `http://localhost:8501`
 
 ## Project Structure
 
@@ -56,6 +64,18 @@ src/
     main.py         # Main entry point
 ```
 
+## Configuration
+
+Code-Mind can be configured using environment variables or a `.env` file:
+
+```
+CODE_MIND_API_URL=http://localhost:8000
+CODE_MIND_OPENAI_API_KEY=your_openai_api_key
+CODE_MIND_MODEL_NAME=gpt-4
+CODE_MIND_DEBUG=False
+CODE_MIND_LOG_LEVEL=INFO
+```
+
 ## License
 
-MIT
+This project is licensed under the MIT License - see the LICENSE file for details.
