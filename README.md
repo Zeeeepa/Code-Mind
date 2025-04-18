@@ -6,7 +6,7 @@ codegen implements full features of codebase analysis via codegen sdk and uses m
 
 
 Autonomous full CI/CD. User should be able to adjust requirements at any moment.
-
+TO USE LINEAR API FOR FULL PROGRAMIC PROJECT MANAGEMENT.
 
 
 Example uses. 
