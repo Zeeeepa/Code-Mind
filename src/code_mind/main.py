@@ -1,7 +1,10 @@
 """Main entry point for Code-Mind."""
 
 import argparse
+import os
+import subprocess
 import sys
+import threading
 from typing import Any, Dict, List, Optional, Union
 
 import uvicorn
@@ -60,19 +63,44 @@ def run_api(host: str, port: int, reload: bool) -> None:
     )
 
 
-def run_ui(host: str, port: int) -> None:
-    """Run the UI server.
+def run_ui(host: str, port: int, reload: bool) -> None:
+    """Run the UI server using Streamlit.
 
     Args:
         host: The host to bind to.
         port: The port to run the server on.
+        reload: Whether to enable auto-reload.
     """
     logger.info(f"Starting UI server on {host}:{port}")
-    # Streamlit is run via the command line
-    # This is just a placeholder
-    logger.info(
-        f"To run the UI server, use: streamlit run src/code_mind/ui/app.py --server.address {host} --server.port {port}"
-    )
+    
+    # Construct the command to run Streamlit
+    cmd = [
+        "streamlit", "run", 
+        os.path.join(os.path.dirname(__file__), "ui", "app.py"),
+        "--server.address", host,
+        "--server.port", str(port)
+    ]
+    
+    # Add reload flag if specified
+    if reload:
+        cmd.append("--server.runOnSave=true")
+    
+    # Run Streamlit as a subprocess
+    try:
+        process = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        
+        # Log Streamlit output
+        for line in process.stdout:
+            logger.info(f"Streamlit: {line.strip()}")
+            
+    except Exception as e:
+        logger.error(f"Error starting Streamlit: {e}")
+        raise
 
 
 def main() -> None:
@@ -80,14 +108,27 @@ def main() -> None:
     args = parse_args()
 
     if not args.api and not args.ui:
-        logger.error("Please specify at least one of --api or --ui")
-        sys.exit(1)
+        # Default to running both if no flags are specified
+        args.api = True
+        args.ui = True
 
-    if args.api:
+    # Run API and UI in separate threads if both are requested
+    if args.api and args.ui:
+        api_thread = threading.Thread(
+            target=run_api,
+            args=(args.host, args.api_port, args.reload),
+            daemon=True
+        )
+        api_thread.start()
+        
+        # Run UI in the main thread
+        run_ui(args.host, args.ui_port, args.reload)
+    elif args.api:
+        # Run just the API
         run_api(args.host, args.api_port, args.reload)
-
-    if args.ui:
-        run_ui(args.host, args.ui_port)
+    elif args.ui:
+        # Run just the UI
+        run_ui(args.host, args.ui_port, args.reload)
 
 
 if __name__ == "__main__":

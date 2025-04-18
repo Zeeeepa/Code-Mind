@@ -1,11 +1,6 @@
 """Streamlit UI for Code-Mind."""
-
-# This is a placeholder for the Streamlit UI
-# To run this, you would use:
-# streamlit run src/code_mind/ui/app.py
-
 import streamlit as st
-
+from code_mind.ui.pages import projects_page, analysis_page, reflection_page
 from code_mind.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -16,18 +11,29 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("Code-Mind")
-st.subheader("Codegen engine driven by itself")
+# Initialize session state
+if "page" not in st.session_state:
+    st.session_state.page = "projects"
 
-st.write(
-    """
-    Welcome to Code-Mind, a self-improving code generation engine.
-    
-    This UI is a placeholder for future development.
-    """
-)
-
-# Add a sidebar
+# Sidebar navigation
 with st.sidebar:
-    st.header("Options")
-    st.write("Future configuration options will appear here.")
+    st.title("Code-Mind")
+    st.caption("Codegen engine driven by itself")
+    
+    st.header("Navigation")
+    if st.button("Projects", use_container_width=True):
+        st.session_state.page = "projects"
+    if st.button("Analysis", use_container_width=True):
+        st.session_state.page = "analysis"
+    if st.button("Reflection", use_container_width=True):
+        st.session_state.page = "reflection"
+    
+    st.divider()
+
+# Render the selected page
+if st.session_state.page == "projects":
+    projects_page()
+elif st.session_state.page == "analysis":
+    analysis_page()
+elif st.session_state.page == "reflection":
+    reflection_page()

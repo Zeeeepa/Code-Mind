@@ -1,5 +1,12 @@
+# API dependencies
 fastapi>=0.95.0
 uvicorn>=0.21.1
+pydantic>=1.10.7
+
+# UI dependencies
 streamlit>=1.22.0
-pydantic>=2.0.0
+requests>=2.28.2
+
+# Utility dependencies
 python-dotenv>=1.0.0
+loguru>=0.7.0
