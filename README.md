@@ -1,78 +1,61 @@
 # Code-Mind
-Code-Mind -Codegen engine driven by itself.
-Input - Requirements references. (any files, codefiles, links to codebases, articles etc). 
-Button Start - Shows processing progress. 
-codegen implements full features of codebase analysis via codegen sdk and uses multithreading agent api further prompting in a full CI/CD self reflection -> Task is done? -> If no-Continue by providing mew scheme to execute. So that it wouldn't get stuck if something fails, so that he could reflect on issues and try otherway.
 
+Code-Mind is a Codegen engine driven by itself - a self-improving code generation system.
 
-Autonomous full CI/CD. User should be able to adjust requirements at any moment.
-TO USE LINEAR API FOR FULL PROGRAMIC PROJECT MANAGEMENT.
+## Features
 
+- API server for code generation and analysis
+- UI interface for interacting with the system
+- Extensible architecture for adding new capabilities
 
-Example uses. 
+## Installation
 
-from codegen import Agent
-# Create an agent
-agent = Agent(org_id="ccc", token="cccccc")
-# Run on task
-task = agent.run("Generate docs for my backend repo")
-# Refresh to get updated status
-task.refresh()
-print(task.status)
-# Once task is complete, you can access the result
-if task.status == "completed":
-    print(task.result)
+```bash
+# Clone the repository
+git clone https://github.com/Zeeeepa/Code-Mind.git
+cd Code-Mind
 
+# Install dependencies
+pip install -r requirements.txt
+```
 
+## Usage
 
+### Running the API Server
 
+```bash
+python -m src.code_mind.main --api --host 0.0.0.0 --api-port 8000 --reload
+```
 
-from codegen import Agent
+### Running the UI
 
-# Initialize the Agent with your organization ID and API token
-agent = Agent(org_id="...", token="...")
+```bash
+python -m src.code_mind.main --ui --host 0.0.0.0 --ui-port 8501
+```
 
-# Run an agent with a prompt
-task = agent.run(prompt="Leave a review on PR #123")
+Or directly with Streamlit:
 
-# Check the initial status
-print(task.status)
+```bash
+streamlit run src/code_mind/ui/app.py --server.address 0.0.0.0 --server.port 8501
+```
 
-# Refresh the task to get updated status (tasks can take time)
-task.refresh()
+### Running Both API and UI
 
-if task.status == "completed":
-    print(task.result)  # Result often contains code, summaries, or links
+```bash
+python -m src.code_mind.main --api --ui --host 0.0.0.0 --api-port 8000 --ui-port 8501 --reload
+```
 
+## Project Structure
 
+```
+src/
+  code_mind/
+    api/            # FastAPI routes and endpoints
+    ui/             # Streamlit UI components
+    utils/          # Utility functions and helpers
+    main.py         # Main entry point
+```
 
+## License
 
-
-from codegen.agents.agent import Agent
-
-# Initialize the Agent with your organization ID and API token
-agent = Agent(
-    org_id="YOUR_ORG_ID",  # Find this at codegen.com/developer
-    token="YOUR_API_TOKEN",  # Get this from codegen.com/developer
-    # base_url="https://codegen-sh-rest-api.modal.run",  # Optional - defaults to production
-)
-
-# Run an agent with a prompt
-task = agent.run(prompt="Implement a new feature to sort users by last login.")
-
-# Check the initial status
-print(task.status)
-
-# Refresh the task to get updated status (tasks can take time)
-task.refresh()
-
-# Check the updated status
-print(task.status)
-
-# Once task is complete, you can access the result
-if task.status == "completed":
-    print(task.result)  # Result often contains code, summaries, or links
-
-
-
-
+MIT
